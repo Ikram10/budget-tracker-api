@@ -2,7 +2,7 @@ const express = require('express');
 const app = express()
 const generateUid = require('./helper-functions')
 
-const PORT = 3000;
+const PORT = 4000;
 
 let totalBudget = 1000;
 let budgetRem = totalBudget;
@@ -92,6 +92,26 @@ app.put('/envelopes/:id', (req, res, next) => {
     console.log(`Envelope updated... total budget is now ${totalBudget}`);
 
     res.send(envelope);
+})
+
+app.delete('/envelopes/:id', (req, res, next) => {
+    const id = Number(req.params.id);
+    console.log(`Searching for envelope with id ${id}...`);
+    const envelope = envelopes.find(element => element.id === id);
+
+    if (!envelope) {
+        console.log(`Error: cannot find envelope with id ${id}`)
+        return res.status(404).send("Error: cannot find envelope with id")
+    }
+
+    const envelopeIndex = envelopes.findIndex(element => element.id === id)
+    console.log(`Attempting to delete envelope with index ${envelopeIndex}...`);
+
+    envelopes.splice(envelopeIndex, 1);
+    console.log("Envelope deleted successfully")
+
+    res.send(envelopes);
+
 })
 
 app.listen(PORT, () => {
