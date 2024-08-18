@@ -70,6 +70,41 @@ app.post('/envelopes', (req, res, next) => {
     res.status(200).send("Envelope created successfully");
 })
 
+app.post('/envelopes/transfer/:fromId/:toId', (req, res, next) => {
+    const fromId = Number(req.params.fromId);
+    const toId = Number(req.params.toId);
+    const transferAmount = Number(req.body.amount);
+
+    console.log(`Attempting to transfer ${transferAmount} from ${fromId} to ${toId}...`)
+
+    // Find the envelopes
+    const fromEnvelope = envelopes.find(envelope => envelope.id === fromId);
+    const toEnvelope = envelopes.find(envelope => envelope.id === toId);
+
+    // Check if both envelopes exist
+    if (!fromEnvelope || !toEnvelope) {
+        console.log("Error: cannot find source envelope and/or to envelope")
+        return res.status(404).send('Error: One or both of the envelopes were not found.');
+    }
+
+    // Check if there is enough balance in the fromEnvelope
+    if (fromEnvelope.balance < transferAmount) {
+        console.log("Error: not enough funds in source envelope")
+        return res.status(400).send('Error: Insufficient funds in the source envelope.');
+    }
+
+    // Perform the transfer
+    fromEnvelope.amount -= transferAmount;
+    toEnvelope.amount += transferAmount;
+
+    // Return a success response
+    res.send({
+        message: 'Transfer successful',
+        fromEnvelope: fromEnvelope,
+        toEnvelope: toEnvelope
+    });
+})
+
 app.put('/envelopes/:id', (req, res, next) => {
     const id = Number(req.params.id);
     console.log(`Searching for envelope with id ${id}...`);
