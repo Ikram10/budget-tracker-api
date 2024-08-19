@@ -1,6 +1,6 @@
 # Budget Tracker API
 
-The **Budget Tracker API** is a RESTful API designed to help you manage and track your finances using the **Budget Envelope Method**. This method assists users in allocating and controlling their spending by dividing their total budget into discrete categories, each represented by an envelope.
+The **Budget Tracker API** is a RESTful API designed to help you manage and track your finances using the [Budget Envelope Method](https://www.thebalancemoney.com/what-is-envelope-budgeting-1293682) This method assists users in allocating and controlling their spending by dividing their total budget into discrete categories, each represented by an envelope.
 
 ## Budget Envelope Method
 
